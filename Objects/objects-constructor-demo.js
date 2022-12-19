@@ -76,6 +76,22 @@ function Employee(name, id, isActive) {
     }
 }
 
+// let myInfo = new Employee("Mohan", 1, true);
+//The above constructor function get transformed as below and get excecuted
+//The below function creates and temperory objecy, say tmpObject, and uses this object
+//to associates/assigns the properties and methods for that object and returns the tmpObjectl
+
+// function employeeTmp(name, id, isActive) {
+//     let tmpObject = {}
+//     tmpObject.name = name;
+//     tmpObject.employeeId = id
+//     tmpObject.isActive = isActive != undefined ? isActive : true;
+//     //Employee name is nZSFRHx and employee id is 3"
+//     tmpObject.printEmployeeInfo = function(){
+//         return ("Employee name is " + this.name + " and employee id is " + this.employeeId);
+//     }
+//     return tmpObject
+// }
 
 //Create a function that creates array of employee objects
 /**
@@ -99,17 +115,124 @@ function addEmployee(employeeObject) {
 }
 allEmployees.addEmployee = addEmployee;
 
+ /**
+  * 
+  * @returns array of employee objects whose employeeId is an even number
+  */
+function getEmpWithEvenIds(){
+    return this.filter((employee) => {
+        return (employee.employeeId % 2 == 0)
+    })
+}
 
-let myInfo = new Employee("Mohan", 1, false);
-allEmployees.addEmployee(myInfo)
+allEmployees.getEmpWithEvenIds = getEmpWithEvenIds;
 
-// console.log(allEmployees)
+function deleteEmployeeById(employeeId){
+    //Iterate through allEmployees List
+    //Find the employee in the allEmployees list matching with the input paremeter 'employeeId'
+    //If found, delete that employee from the list and return TRUE
+    // Else, return false
 
-myInfo = allEmployees.customActiveFilter((employeeObj) => {
-    return employeeObj.name == "Mohan"
-})
+    let employeeFoundIndex  = this.findIndex((employee) => employee.employeeId == employeeId)
+
+    if(employeeFoundIndex > -1){
+        this.splice(employeeFoundIndex, 1)
+        return true;
+    } else {
+        return false;
+    }
+
+    // for(let employeeIndex = 0; employeeIndex < this.length; employeeIndex++){
+    //     //matching employee with employeeId is found
+    //     if(this[employeeIndex].employeeId == employeeId){
+
+    //         //deletes an element from an array at index and of size n
+    //         //this.splice(index, size)
+    //         this.splice(employeeIndex, 1);
+    //         return true;
+    //     }
+    // }
+
+    // return false;
+}
+
+allEmployees.deleteEmployeeById = deleteEmployeeById;
+
+let employeeDeleteStatus = allEmployees.deleteEmployeeById(102);
+
+/**
+ * 
+ * @param {*} callBackFn = Takes a function that will be executes on only active employees in the array
+ * @return = array of employee objects that satisfies the callback fn condition 
+ */
+
+function customActiveFilter(callBackFn){
+    let result = [];
+
+    for(let employeeIndex = 0; employeeIndex < this.length; employeeIndex++){
+        if(this[employeeIndex].isActive == true && callBackFn(this[employeeIndex]) ==  true){
+                result.push(this[employeeIndex]);
+        }
+    }
+
+    return result;
+}
+
+allEmployees.customActiveFilter = customActiveFilter;
+
+function getActiveEmpWithEvenIds(){
+    return this.customActiveFilter((employee) => {
+        return (employee.employeeId % 2 == 0)
+    })
+}
+
+allEmployees.getActiveEmpWithEvenIds = getActiveEmpWithEvenIds;
+
+console.log(allEmployees.getActiveEmpWithEvenIds());
 
 
-// console.log(allEmployees);
-// console.log(allEmployees[4].printEmployeeInfo());
+let myInfo = new Employee("Mohan", 1, true);
+let myInfo1 = new Employee("Mohan", 1, true);
+console.log("myInfo", myInfo);
+console.log("myInfo1", myInfo1);
+
+let myInfo3 = {} //  assign the address, or object by reference
+
+
+Object.assign(myInfo3, myInfo1)
+
+
+if(myInfo3 == myInfo1){
+    myInfo3.name = "Santosh"
+    console.log("Both the objects are same");
+    console.log("myInfo3", myInfo3.name);
+    console.log("myInfo1", myInfo1.name);
+} else {
+    console.log("Both are not same");
+}
+
+// RAM + CPU
+// myInfo = 0x00001 => {
+//     name: "Mohan",
+//     employeeId: 1,
+//     isActive: true
+// }
+
+// myInfo2 = 0x00002 => {
+//     name: "Mohan",
+//     employeeId: 1,
+//     isActive: true
+// }
+
+// let myInfo3 = myInfo1;
+
+// myInfo3 = 0x00001
+// myInfo1 = 0x00001
+
+// if(myInfo3 == myInfo1){
+//     console.log("Both the objects are same");
+// } else {
+//     console.log("Both are not same");
+// }
+
 
