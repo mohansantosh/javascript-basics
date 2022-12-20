@@ -4,6 +4,9 @@
 # Author: Vivek Gite {https://www.cyberciti.biz}
 # -----------------------------------------------------------
 
+# chmod 755 printMyNameShell.sh
+# ./printMyNameShell.sh
+
 # Synchronus Language
 SLEEP_TIME="10"
 echo "Hi, I'm waiting for 10secs"
