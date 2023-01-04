@@ -13,9 +13,10 @@ const connectionObj = {
     "host": "localhost",
     "dialect": "mysql"
 };
-
+//Initialize connection
 let sequelize = new Sequelize(connectionObj.database, connectionObj.username, connectionObj.password, connectionObj);
 
+//Create Model
 let Employee = sequelize.define('Employee', {
         id: {
             primaryKey: true, 
@@ -87,8 +88,10 @@ let EmployeeInfo = sequelize.define('EmployeeInfo', {
 }
 );
 
+//Create one-to-one relationship
 Employee.hasOne(EmployeeInfo);
 
+//Sync the tables between the sequelize and database;
 async function createTables(){
     try{
         await sequelize.sync({force: true});
@@ -99,6 +102,7 @@ async function createTables(){
 }
 
 
+//fn to create employee info in the table employees_info
 async function createEmployeeInfo() {
     try {
         let employeeInfo  = await EmployeeInfo.create({
@@ -116,6 +120,7 @@ async function createEmployeeInfo() {
     }
 }
 
+//create employee record in the employees table
 async function createEmployee(employeeId) {
     try{
         let employee = await Employee.create({
@@ -128,6 +133,7 @@ async function createEmployee(employeeId) {
     }
 }
 
+//call the functions using promise chains
 createTables()
 .then(async (done) => {
     let employee = await createEmployee("MOHAN-MENTOR-123");
