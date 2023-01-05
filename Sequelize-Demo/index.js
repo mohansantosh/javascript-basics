@@ -173,6 +173,8 @@ async function createTables(){
         await sequelize.sync({force: true});
         let employee = await createEmployee("MOHAN-123");
         let employee1 = await createEmployee("ANJI-987");
+
+        //employee.employeeId
         //creating my information in the employees_info table
         let employeeInfo = await createEmployeeInfo();
         //create the one-to-one relationship between employee and employeeIno
@@ -276,8 +278,8 @@ async function createEmployee(employeeId) {
     try{
         let employee = await Employee.create({
             id: crypto.randomUUID(),
-            employeeId
-        })
+            employeeId: employeeId
+        });
         return employee;
     } catch(error) {
         throw new Error(error);
@@ -287,10 +289,33 @@ async function createEmployee(employeeId) {
 //call the functions using promise chains
 createTables()
 .then(async (employee) => {
-    console.log("get all designations of employee " + employee.employeeId, (await employee.getDesignations()).map((designation) => designation.designation_name));
-    // console.log("get employeess with a designation", (await designtation.getEmployees())[0].employeeId);
+    let iamEager = await Employee.findOne({
+        where: {
+            employeeId: "MOHAN-123"
+        },
+        include: EmployeeInfo
+    });
 
-    console.log((await (await employee.getEmployeeInfo()).getEmployeeAddresses()).length);
+
+    let iamLazy = await Employee.findOne({
+        where: {
+            employeeId: "MOHAN-123"
+        }
+    })
+
+    let iam = iamLazy;
+    console.log("iamEager - Want my First Name >>> ", iamEager.EmployeeInfo.firstName);
+    console.log("iamLazy - Want my First Name ### ", (await iamLazy.getEmployeeInfo()).firstName);  
+
+    //many to many relationship 
+    let designation = await Designation.findOne();
+    console.log("many-to-many - an employee with many designations " + iamLazy.employeeId, (await iamLazy.getDesignations()).map((designation) => designation.designation_name));
+    console.log("many-to-many - a designation assigned to many emplyoees", (await designation.getEmployees()).map((employee) => employee.employeeId));
+    
+    //iam = Employee Type
+    // await Employee.get"EmployeeInfo"() = returns "EmployeeInfo" object of iam employee
+
+    console.log("one-to-many: ", (await (await iam.getEmployeeInfo()).getEmployeeAddresses()).map((address) => address.streetName));
     // let designation = await Designation.findAll({limit: 1});
     // console.log(designation[0].designation_name)
     // console.log((await designation[0].getEmployees()).map(((employee) => employee.employeeId)));
