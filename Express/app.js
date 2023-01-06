@@ -6,7 +6,7 @@ var bodyParser = require('body-parser')
 const app = express();
 
 app.use(bodyParser.json());
-  
+app.use(bodyParser.urlencoded({ extended: false }));
 
 //sync all the models
 const db = require("./models");

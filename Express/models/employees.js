@@ -1,8 +1,8 @@
 
-let Employee = function (sequelize, Sequelize) {
-    return sequelize.define('Employee', {
+module.exports = function (sequelize, Sequelize) {
+    let Employee = sequelize.define('Employee', {
         id: {
-            primaryKey: true, 
+            primaryKey: true,
             type: Sequelize.UUID,
             defaultValue: Sequelize.UUIDV4,
         },
@@ -19,14 +19,15 @@ let Employee = function (sequelize, Sequelize) {
         updatedAt: {
             type: Sequelize.DATE,
             allowNull: true,
-            defaultValue: Sequelize.fn('now')        
+            defaultValue: Sequelize.fn('now')
         }
-    }, 
-    {
-        tableName: 'employees'
+    },
+        {
+            tableName: 'employees'
+        }
+    )
+    Employee.associate = function(models) {
+        Employee.hasOne(models["EmployeeInfo"]);
     }
-    
-)
+    return Employee;
 }
-   
-module.exports = Employee;

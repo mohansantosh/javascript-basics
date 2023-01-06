@@ -1,7 +1,9 @@
-let EmployeeRouter = require("./employees/employees.router");
+const EmployeeRouter = require("./employees/employees.router");
+const EmployeeInfoRouter  = require("./employees_info/employees_info.router"); 
 
-let mainRouter = function(expresApp) {
-    expresApp.use('/employee', EmployeeRouter);
+let mainRouter = function(expressApp) {
+    expressApp.use('/employee', EmployeeRouter);
+    expressApp.use('/employee_info', EmployeeInfoRouter);
 }
 
 module.exports = mainRouter;
