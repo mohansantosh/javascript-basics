@@ -13,14 +13,12 @@ const db = require("./models");
 db.sequelize.sync()
   .then(() => {
     console.log("Synced db.");
-    console.log(Object.keys(db));
     generateRouters(app);
   })
   .catch((err) => {
     throw new Error("Failed to sync db: " + err.message);
   });
 
-//
 
 const swaggerOptions = {
   definition: {

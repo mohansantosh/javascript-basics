@@ -25,6 +25,7 @@ let Employee = function (sequelize, Sequelize) {
     {
         tableName: 'employees'
     }
+    
 )
 }
    

@@ -20,6 +20,6 @@ const createEmployeeSchema = object({
             required_error: "id is required"
         }).min(6, "EmployeeId is too short")
     })
-})
+});
 
 module.exports = createEmployeeSchema;
